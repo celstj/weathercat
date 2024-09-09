@@ -1,6 +1,6 @@
 # Weather Cat Forecast
 
-Live Project: '#'
+[Live Project](https://celstj.github.io/weathercat/) | [Code](https://github.com/celstj/weathercat)
 
 React based weather app, display current weather conditions using dynamic API data.
 
