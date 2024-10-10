@@ -1,46 +1,60 @@
-import { useState, useEffect } from 'react';
-import './modules/App.css';
+import { useState, useEffect, useMemo } from 'react';
+import SearchBar from './modules/hooks/SearchBar';
 import getWeather from './modules/weatherAPI/getWeather';
-import getLocation from './modules/weatherAPI/getLocation';
-import getTemperature from './modules/weatherAPI/getTemperature';
+// import getForecast from './modules/weatherAPI/getForecast';
 
 // Main App component
 function App() {
-  // State variables for weather data, loading status, and errors
   const [weatherData, setWeatherData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect to fetch weather data on component mount
-  useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        // Fetch weather data
-        const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-        const data = await getWeather(apiKey);
-        setWeatherData(data); // Set weather data to state
-        setLoading(false); // Update loading status
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
-        setError(error); // Set error to state
-        setLoading(false); // Update loading status
-      }
+  const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
+
+  const handleSearch = async(query) => {
+    try {
+      const data = await getWeather(apiKey, query);
+      setWeatherData(data);
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      setError(error);
+    }
+  }
+
+  const formattedTime = useMemo(() => {
+    if (!weatherData) return ''; 
+
+    const localtime = weatherData.location.localtime;
+    const time = new Date(localtime);
+
+    const options = {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
     };
 
-    fetchWeather();
-  }, []); // Empty dependency array means this runs once on component mount
+    return time.toLocaleString('en-US', options);
+  }, [weatherData]);
 
-  // Conditional rendering based on loading and error states
-  if (loading) return <p>Loading weather data...</p>;
-  if (error) return <p>Error loading weather data: {error.message}</p>; // Show error message
 
   return (
-    <div>
+    <div className='header-section'>
       <h2>Weather Cat</h2>
+      {/* Pass handleSearch to SearchBar as a prop */}
+      <SearchBar onSearch={handleSearch} />
+      {error && <p>Error loading weather data: {error.message}</p>}
       {weatherData && (
-        <div>
-          <p>Location: {weatherData.location.name}</p>
-          <p>Temperature: {weatherData.current.temp_c}°C</p>
+        <div className='weather-body'>
+          <div className='today-weather'>
+            <p>Location: {weatherData.location.name}, {weatherData.location.country}</p>
+            <p>Temperature: {weatherData.current.temp_c}°C</p>
+            <p>Weather: {weatherData.current.condition.text}</p>
+            <p>Wind Speed: {weatherData.current.wind_kph}/kph</p>
+            <p>Humidity: {weatherData.current.humidity}%</p>
+            <p>Time: {formattedTime}</p>
+          </div>
+          <div className='upcoming-weather'>
+            {/* <UpcomingDays/> */}
+          </div>
         </div>
       )}
     </div>

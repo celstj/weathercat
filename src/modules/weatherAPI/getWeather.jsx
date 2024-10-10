@@ -1,18 +1,12 @@
 
-const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-
-async function getWeather(apiKey) {
-    try {
-        const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=${apiKey}`, { mode: 'cors' });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log(data);
-        return data; // Return data for further use
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
+const getWeather = async (apiKey,location) => {
+    const response = await fetch(
+        `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}`
+    );
+    if (!response.ok) {
+        throw new Error('Failed to fetch weather data');
     }
-}
+    return await response.json();
+};
 
 export default getWeather;
