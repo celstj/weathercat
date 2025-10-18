@@ -22,13 +22,13 @@
 
 }
 
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   border-radius: 10px;
   margin-top: 20px;
   padding-top: 20px;
-}
+} */
 
 a {
   font-weight: 500;
@@ -40,12 +40,12 @@ a:hover {
   color: #535bf2;
 }
 
-body {
+/* body {
   margin: 0;
   display: flex;
   min-width: 320px;
   min-height: 20vh;
-}
+} */
 
 h2, h3 {
   font-family: "Dosis", sans-serif;
@@ -73,10 +73,11 @@ img {
 
 /* --- SEARCH BAR --- */
 
-.search-bar > form {
-  width: 650px;
+/* .search-bar > form {
+  width: 100%;
+  max-width: 600px;
   display: inline-block;
-}
+} */
 
 .search-bar {
   text-align: center;
@@ -145,7 +146,7 @@ button:focus-visible {
   position: relative;
 }
 
-.weather-mascot {
+/* .weather-mascot {
   position: absolute;
   left: 50px;
   top: 45%;
@@ -154,7 +155,7 @@ button:focus-visible {
   pointer-events: none;
   width: 300px;
   height: auto;
-}
+} */
 
 .astro-bg {
   border-radius: 10px;

@@ -41,8 +41,8 @@ function SearchBar({ onSearch }) {
     };
 
     return (
-        <div className='search-bar'>
-            <form onSubmit={handleSubmit}>
+        <div className="search-bar">
+            <form className="w-full max-w-md flex justify-center" onSubmit={handleSubmit}>
                 <input 
                     type="text" 
                     value={query}

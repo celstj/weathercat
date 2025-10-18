@@ -104,4 +104,5 @@ The mascot changes depending on the weather code (like sunny, rainy, or cloudy),
 
 **Potential improvements Ideas:**
 - replace all the `current api` to `forecast api` as forecast api also includes current weather data, and it'll make data retrieving more streamline
-- optimise as desktop-first experiene or OBS overlay module.
+- optimise as OBS overlay module.
+- dark & light mode theme.

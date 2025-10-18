@@ -162,9 +162,10 @@ function MainBox() {
 
     return (
         <>
-        <div id='root' className={`astro-bg ${currentBgGradient}`}>
-            <div className='header-section'>
-                <SearchBar onSearch={handleSearchWrapper} />    
+            <div className="header-section w-screen absolute top-2 sm:top-10 z-[99] px-4 py-2">
+                <div className="w-full flex justify-center">
+                    <SearchBar onSearch={handleSearchWrapper} />
+                </div> 
                 {/* Display error message without affecting the weather data */}
                 {error && !weatherData?.location && (
                     <p className="error-message">
@@ -177,64 +178,74 @@ function MainBox() {
                 )}
                 
             </div>
-                <div className={`main-content`}>
+        <div id='root' 
+            className={`
+                relative astro-bg ${currentBgGradient} 
+                max-w-[1280px] w-full mx-auto
+                rounded-lg sm:mt-5 sm:pt-5 sm:px-4 sm:pb-8
+                flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4
+            `}
+        >    
+            <div className={`main-content
+            `}>
 
-                {weatherData?.location && !isLoading && forecastForSelectedDay ? (
-                    <div className='weather-body'>
+            {weatherData?.location && !isLoading && forecastForSelectedDay ? (
+                <div className='weather-body'>
 
-                        {mascotUrl && (
-                            <img 
-                                className='weather-mascot' 
-                                src={mascotUrl} 
-                                alt="Weather mascot"
-                            />
-                        )}
-                        
-                        <div className='today-weather-info'>
-                            <h2 className={`location-name loc-name-${currentAstro}`}>
-                                {weatherData?.location?.name ? 
-                                    `${weatherData.location.name}, ${weatherData.location.country}` 
-                                    : 'Location Not Available'}
-                            </h2>    
-                            <h3 className={`location-date loc-date-${currentAstro}`}>
-                                {selectedHour?.timeObj.toLocaleString(DateTime.DATE_FULL)}
-                            </h3>
-                            <h3 className={`location-time loc-time-${currentAstro}`}>
-                                {selectedHour?.timeObj.toLocaleString(DateTime.TIME_SIMPLE)}
-                            </h3>
-                        </div>
-
-                        <div className={`today-weather-data twd-${currentAstro}`}>
-                            <p>Temperature: {selectedHour?.temp_c ?? weatherData?.current?.temperature}°C</p>
-                            <p>Weather Condition: {selectedHour?.condition?.text ?? weatherData?.current?.condition.text}</p>
-                            <p>Wind Speed: {selectedHour?.wind_kph ?? weatherData?.current?.windSpeed} /kph</p>
-                            <p>Humidity: {selectedHour?.humidity ?? weatherData?.current?.humidity}%</p>
-                        </div>
-                        
-                        {forecastData?.forecast?.forecastday && forecastData?.forecast?.forecastday?.length > 0 ? (
-                            <Upcoming 
-                                forecastData={forecastData}
-                                onDaySelect={handleDayChange}
-                                selectedDay={selectedDay}
-                            />
-                        ) : (
-                            <div className="no-data-warning">😭 No forecast found for this location.</div>
-                        )}
-
-                        <HourlySlider  
-                            hourlyData={combinedHourlyData} 
-                            onHourSelect={handleSelectHour} 
-                            weatherData={weatherData}
-                            selectedDay={selectedDay}
-                            locationTimezone={locationTimezone}
+                    {mascotUrl && (
+                        <img 
+                            src={mascotUrl} 
+                            alt="Weather mascot"
+                            className='weather-mascot absolute left-[50px] top-[45%] -translate-y-1/2 z-[999] 
+                                pointer-events-none w-[300px] h-auto' 
                         />
+                    )}
+                    
+                    <div className='today-weather-info'>
+                        <h2 className={`location-name loc-name-${currentAstro}`}>
+                            {weatherData?.location?.name ? 
+                                `${weatherData.location.name}, ${weatherData.location.country}` 
+                                : 'Location Not Available'}
+                        </h2>    
+                        <h3 className={`location-date loc-date-${currentAstro}`}>
+                            {selectedHour?.timeObj.toLocaleString(DateTime.DATE_FULL)}
+                        </h3>
+                        <h3 className={`location-time loc-time-${currentAstro}`}>
+                            {selectedHour?.timeObj.toLocaleString(DateTime.TIME_SIMPLE)}
+                        </h3>
                     </div>
-                ) : (
-                    // if weather data or selected hour isnt ready, show a loading message
-                    <div className='loading-state'>
-                        {isLoading ? <p> Loading ... </p> : <p>Please wait, loading weather data...</p>}
+
+                    <div className={`today-weather-data twd-${currentAstro}`}>
+                        <p>Temperature: {selectedHour?.temp_c ?? weatherData?.current?.temperature}°C</p>
+                        <p>Weather Condition: {selectedHour?.condition?.text ?? weatherData?.current?.condition.text}</p>
+                        <p>Wind Speed: {selectedHour?.wind_kph ?? weatherData?.current?.windSpeed} /kph</p>
+                        <p>Humidity: {selectedHour?.humidity ?? weatherData?.current?.humidity}%</p>
                     </div>
-                )}
+                    
+                    {forecastData?.forecast?.forecastday && forecastData?.forecast?.forecastday?.length > 0 ? (
+                        <Upcoming 
+                            forecastData={forecastData}
+                            onDaySelect={handleDayChange}
+                            selectedDay={selectedDay}
+                        />
+                    ) : (
+                        <div className="no-data-warning">😭 No forecast found for this location.</div>
+                    )}
+
+                    <HourlySlider  
+                        hourlyData={combinedHourlyData} 
+                        onHourSelect={handleSelectHour} 
+                        weatherData={weatherData}
+                        selectedDay={selectedDay}
+                        locationTimezone={locationTimezone}
+                    />
+                </div>
+            ) : (
+                // if weather data or selected hour isnt ready, show a loading message
+                <div className='loading-state'>
+                    {isLoading ? <p> Loading ... </p> : <p>Please wait, loading weather data...</p>}
+                </div>
+            )}
             </div>
         </div>
         </>
